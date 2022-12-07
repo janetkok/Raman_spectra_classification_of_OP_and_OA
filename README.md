@@ -17,11 +17,11 @@ Proposed Multi-CNN applied to raw data - superficial vs deep OP (Male) at region
 
 Baseline CNN applied to raw data - superficial vs deep OP (Male) at region 1200cm<sup>-1</sup>
 
-`python cnnDefTrainkfold.py --dataset "./dataset/raw/1200_superficial_vs_deep_OP_M.csv" --seed 0 --threads 1 --lr 0.01 --train-batch 4 --valid-batch 1 --epochs 100 --checkpoint-hist 1;`
+`python cnn.py --dataset "./dataset/raw/1200_superficial_vs_deep_OP_M.csv" --seed 0 --threads 1 --lr 0.01 --train-batch 4 --valid-batch 1 --epochs 100 --checkpoint-hist 1;`
 
 Baseline CNN applied to pre-processed data - superficial vs deep OP (Male) at region 1200cm<sup>-1</sup>
 
-`python cnnDefTrainkfold.py --dataset "./dataset/preprocessed/1200_superficial_vs_deep_OP_M.csv" --seed 0 --threads 1 --lr 0.01 --train-batch 4 --valid-batch 1 --epochs 100 --checkpoint-hist 1;`
+`python cnn.py --dataset "./dataset/preprocessed/1200_superficial_vs_deep_OP_M.csv" --seed 0 --threads 1 --lr 0.01 --train-batch 4 --valid-batch 1 --epochs 100 --checkpoint-hist 1;`
 
 ### Feature selection
 Please run the proposed Multi-CNN on the classification task prior to the following experiments:
