@@ -1,0 +1,9 @@
+.tif
+*.out
+*.pt
+__pycache__/
+*.tar
+*.pth
+*.tiff
+*.sh
+output/*
