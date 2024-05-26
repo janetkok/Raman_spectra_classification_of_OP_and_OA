@@ -193,9 +193,9 @@ def main():
         # cross validate(trainset combined with valset and testset) using the optimal epoch
         et_metrics,_ = train(model,dataloader, criterion, optimizer, num_epochs=args.epochs,saver=saver,best_epoch_val_error =best_epoch_val_error,foldMain=foldMain,phases=["trainval","test"],filename="ct.csv")
         cv_metrics['val_loss'].append(eval_metrics['loss'])
-        cv_metrics['val_f1'].append(eval_metrics['acc'])
+        cv_metrics['val_f1'].append(eval_metrics['f1'])
         cv_metrics['test_loss'].append(et_metrics['loss'])
-        cv_metrics['test_f1'].append(et_metrics['acc'])
+        cv_metrics['test_f1'].append(et_metrics['f1'])
 
         # Integrated gradients
         model = Multi_ResNet(input_dim=input_dim, n_classes=n_classes,channel=len(args.channel)+1).cuda()

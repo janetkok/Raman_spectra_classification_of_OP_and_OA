@@ -3,7 +3,7 @@ import numpy as np
 import torch
 import os
 import pandas as pd
-from sklearn.preprocessing import LabelEncoder,MinMaxScaler
+from sklearn.preprocessing import LabelEncoder,MinMaxScaler, StandardScaler
 from scipy.interpolate import UnivariateSpline
 from pybaselines import whittaker, spline, morphological, misc, polynomial, smooth, classification, spline, optimizers
 
@@ -17,11 +17,10 @@ class RamanDataset(torch.utils.data.Dataset):
     def __init__(self, 
                 ds, 
                 split_idx,cnn=False):
-        scaler = MinMaxScaler(feature_range=(0,1))
-  
-        for i in range(len(ds)):
-            temp = scaler.fit_transform(ds.iloc[i,1:].to_numpy().reshape((-1,1)))
-            ds.iloc[i,1:] = temp.reshape((1,-1)).squeeze()
+        scaler = StandardScaler()
+
+
+        ds.iloc[:,1:] = scaler.fit_transform(ds.iloc[:,1:])
 
         ds = ds.iloc[split_idx, :].copy()
         ds.reset_index(drop=True,inplace=True)
@@ -49,12 +48,8 @@ class RamanMultiChannelDataset(torch.utils.data.Dataset):
     def __init__(self, 
                 ds, 
                 split_idx, channel=[]):
-        scaler = MinMaxScaler(feature_range=(0,1))
+        scaler = StandardScaler()
  
-
-  
-        ds = ds.iloc[split_idx, :].copy()
-        ds.reset_index(drop=True,inplace=True)
         ds = np.array(ds)
         ds = np.expand_dims(ds, axis=1)
         dsOri = ds.copy()
@@ -102,11 +97,12 @@ class RamanMultiChannelDataset(torch.utils.data.Dataset):
             # if 'derpsalsa' in channel:
             #     ds[i,j,1:] = ds[i,0,1:]-whittaker.derpsalsa(dsTemp[i,0,1:])[0] 
             #     j+=1
-            for n in range(ds.shape[1]):
-                temp = scaler.fit_transform(ds[i,n,1:].reshape((-1,1)))
-                ds[i,n,1:] = temp.reshape((1,-1))
+        
+        for n in range(ds.shape[1]):
+            ds[:,n,1:] = scaler.fit_transform(ds[:,n,1:])
+
+        ds = ds[split_idx, :,:]
      
-  
         self.ds = ds  
 
 

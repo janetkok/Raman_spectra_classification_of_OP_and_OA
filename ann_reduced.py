@@ -111,7 +111,7 @@ formatNumber = lambda n: n if n%1 else int(n)
 def main():
     #initialisation 
     args, args_text = parse_args_train()
-    cv_metrics = dict(val_loss=[],val_acc=[],test_loss=[],test_acc=[])
+    cv_metrics = dict(val_loss=[],val_f1=[],test_loss=[],test_f1=[])
     ds = pd.read_csv(args.dataset)
     folder_name = args.dataset.split("/")[-1].split(".csv")[0] 
     foldMulticnn = './output/multicnn/'+folder_name
@@ -202,25 +202,25 @@ def main():
         # cross validate(trainset combined with valset and testset) using the optimal epoch
         et_metrics,_ = train(model,dataloader, criterion, optimizer, num_epochs=args.epochs,saver=saver,best_epoch_val_error =best_epoch_val_error,foldMain=foldMain,phases=["trainval","test"],filename="ct.csv")
         cv_metrics['val_loss'].append(eval_metrics['loss'])
-        cv_metrics['val_acc'].append(eval_metrics['acc'])
+        cv_metrics['val_f1'].append(eval_metrics['f1'])
         cv_metrics['test_loss'].append(et_metrics['loss'])
-        cv_metrics['test_acc'].append(et_metrics['acc'])
+        cv_metrics['test_f1'].append(et_metrics['f1'])
 
     
     # cross validation results
-    avg_metrics = OrderedDict([('val_loss', np.mean(cv_metrics['val_loss'])),('val_acc', np.mean(cv_metrics['val_acc']))])
+    avg_metrics = OrderedDict([('val_loss', np.mean(cv_metrics['val_loss'])),('val_f1', np.mean(cv_metrics['val_f1']))])
     print(avg_metrics)
     update_cv('avg_metrics',avg_metrics,  os.path.join(foldMain, 'cv.csv'), write_header=True)
 
-    avg_metrics = OrderedDict([('test_loss', np.mean(cv_metrics['test_loss'])),('test_acc', np.mean(cv_metrics['test_acc']))])
+    avg_metrics = OrderedDict([('test_loss', np.mean(cv_metrics['test_loss'])),('test_f1', np.mean(cv_metrics['test_f1']))])
     print(avg_metrics)
     update_cv('avg_metrics',avg_metrics,  os.path.join(foldMain, 'ct.csv'), write_header=True)
     
-    std_metrics =  OrderedDict([('sd val loss', np.std(cv_metrics['val_loss'])), ('sd val acc', np.std(cv_metrics['val_acc']))])
+    std_metrics =  OrderedDict([('sd val loss', np.std(cv_metrics['val_loss'])), ('sd val acc', np.std(cv_metrics['val_f1']))])
     print(std_metrics)
     update_cv('std_metrics',std_metrics, os.path.join(foldMain, 'cv.csv'), write_header=True)
 
-    std_metrics =  OrderedDict([('sd test loss', np.std(cv_metrics['test_loss'])), ('sd test acc', np.std(cv_metrics['test_acc']))])
+    std_metrics =  OrderedDict([('sd test loss', np.std(cv_metrics['test_loss'])), ('sd test acc', np.std(cv_metrics['test_f1']))])
     print(std_metrics)
     update_cv('std_metrics',std_metrics, os.path.join(foldMain, 'ct.csv'), write_header=True)
                         
