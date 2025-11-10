@@ -1,4 +1,4 @@
-This work is published at [Scientific Reports](https://doi.org/10.1038/s41598-024-66857-6). 
+This work was published at [Scientific Reports](https://doi.org/10.1038/s41598-024-66857-6). 
 # Table of contents
 1. [Installation](#Installation)
 2. [Sample Usage](##Sample-Usage)
